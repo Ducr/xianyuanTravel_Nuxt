@@ -1,6 +1,14 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Ducr
+ * @Date: 2019-09-01 18:55:57
+ * @LastEditors: Ducr
+ * @LastEditTime: 2019-09-02 15:40:34
+ -->
 <template>
-  <div class="container">
-      <div class="footer">
+  <div class="foooter">
+      <div class="container">
             <el-row type="flex"  class="support" justify="space-between">
                 <div class="travel">
                     <h5>闲云旅游旅游网</h5>
@@ -49,11 +57,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    .container{
+    .foooter{
     background-color: #323232;
     color:#ccc;
     font-size: 12px;
-    .footer{
+    .container{
         margin: 0 auto;
         width: 1000px;
         .support{
@@ -62,6 +70,7 @@ export default {
                 width:250px;
                 h5{
                     font-size: 16px;
+                    font-weight: normal;
                     height: 21px;
                     line-height: 21px;
                     margin-bottom:10px;
