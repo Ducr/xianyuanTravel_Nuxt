@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-01 10:51:27
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-02 16:15:04
+ * @LastEditTime: 2019-09-04 18:37:35
  -->
 <template>
   <div class="index">
@@ -76,7 +76,7 @@ export default {
           placeholder: ''
         }
       ],
-      current:0
+      current: 0
     }
   },
   mounted(){
@@ -84,10 +84,10 @@ export default {
       url:'/scenics/banners'
     })
     .then(res=>{
-      console.log(res)
+      // console.log(res)
       if(res.status===200){
         this.banners=res.data.data
-        console.log(this.banners)
+        // console.log(this.banners)
       }
     })
     .catch(err=>{

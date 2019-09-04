@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @version: 
+ * @Author: Ducr
+ * @Date: 2019-09-01 18:55:46
+ * @LastEditors: Ducr
+ * @LastEditTime: 2019-09-04 17:24:53
+ -->
 <template>
   <div class="header">
     <el-row class="tab" type="flex" justify="space-between">
@@ -11,8 +19,27 @@
             <nuxt-link to='/hotel'>酒店</nuxt-link>
             <nuxt-link  to='/air'>国内机票</nuxt-link>
         </el-row>
-        <div class="login">
+        <div class="login" v-if="!$store.state.user.userInfo.token">
             <nuxt-link  to='/user/login'>登录 / 注册</nuxt-link>
+            <!-- 如果用户存在则展示用户信息，用户数据来自store -->
+        </div>
+        <div class="register" v-else>
+            <el-dropdown >
+                <el-row type="flex" align="middle" class="el-dropdown-link">
+                    <nuxt-link to="#">
+                        <img :src="$axios.defaults.baseURL + $store.state.user.userInfo.user.defaultAvatar"/>
+                        {{$store.state.user.userInfo.user.nickname}} 
+                    </nuxt-link>
+                    <i class="el-icon-caret-bottom el-icon--right"></i>
+                </el-row>
+                
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <!-- 给第三方组件添加事件需要加上native -->
+                    <el-dropdown-item
+                    @click.native="logout">退出</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
     </el-row>
   </div>
@@ -20,7 +47,17 @@
 
 <script>
 export default {
-
+    mounted(){
+        // console.log(this.$store.state)
+    },
+    methods:{
+        logout(){
+            this.$store.commit('user/clearUserInfo')
+            this.$router.push('/user/login')
+            this.$message.success('退出成功')
+        }
+    }
+    
 }
 </script>
 
@@ -64,6 +101,16 @@ export default {
         &:hover{
             color:#fff;
         }
+    }
+}
+.register img{
+    width:36px;
+    height: 36px;
+    border-radius: 50%;
+    vertical-align: middle;
+    border:2px transparent solid;
+    &:hover{
+        border:2px #409eff solid;
     }
 }
 </style>>

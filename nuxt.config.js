@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @version: 
+ * @Author: Ducr
+ * @Date: 2019-09-01 10:51:27
+ * @LastEditors: Ducr
+ * @LastEditTime: 2019-09-04 17:38:07
+ */
 import pkg from './package'
 
 export default {
@@ -36,7 +44,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/element-ui'
+    '@/plugins/element-ui',
+    { src: '@/plugins/localStorage.js', ssr: false }
   ],
 
   /*
