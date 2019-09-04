@@ -4,10 +4,10 @@
  * @Author: Ducr
  * @Date: 2019-09-02 19:19:10
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-04 18:45:34
+ * @LastEditTime: 2019-09-04 20:58:33
  -->
 <template>
-  <el-form  class="form" :model="loginForm" :rules="rules" ref="loginForm">
+  <el-form  class="form" :model="loginForm" :rules="rules" ref="loginForm"  @keyup.ctrl.13.native="login">
     <el-form-item class="form-item" prop="username">
         <el-input v-model="loginForm.username" placeholder="用户名/手机" >
         </el-input>
@@ -19,7 +19,7 @@
     <p class="form-text">
         <nuxt-link to="#">忘记密码</nuxt-link>
     </p>
-    <el-button class="submit" type="primary" @click="submitForm">
+    <el-button class="submit" type="primary" @click="login">
       登录
     </el-button>
   </el-form>
@@ -45,7 +45,7 @@ export default {
     }
   },
   methods:{
-    submitForm(){
+    login(){
       this.$refs.loginForm.validate(valid=>{
         if(valid){
           // 1.使用mutations进行同步数据存储，状态管理
