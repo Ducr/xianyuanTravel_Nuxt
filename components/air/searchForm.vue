@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-05 15:53:30
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-05 19:49:34
+ * @LastEditTime: 2019-09-05 21:29:32
  -->
 <template>
     <div class="search-form">
@@ -14,7 +14,7 @@
             <span 
             v-for="(item,index) in tabBar" :key="index"
             :class="{active: currentTab===index}"
-            @click="currentTab=index">
+            @click="searchTab(index)">
                 <i :class="item.icon"></i>{{item.name}}
             </span>
         </el-row>
@@ -103,6 +103,16 @@ export default {
       
     },
     methods:{
+      // 0.tab栏切换时触发
+      searchTab(index){
+        this.currentTab = 0
+        this.$confirm('目前暂时不支持往返','提示',{
+          confirmButtonText:'确认',
+          showCancelButton:false,
+          type:'warning',
+          center:true
+        })
+      },
       // 1.触发城市输入框获得焦点时触发
       // value是选中的值，callback是回调函数，接收要展示的列表，
       // callback的参数要求：

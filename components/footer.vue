@@ -4,21 +4,21 @@
  * @Author: Ducr
  * @Date: 2019-09-01 18:55:57
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-02 15:40:34
+ * @LastEditTime: 2019-09-05 22:00:13
  -->
 <template>
   <div class="foooter">
       <div class="container">
             <el-row type="flex"  class="support" justify="space-between">
-                <div class="travel">
+                <el-col :span="6" :offset="1" class="travel">
                     <h5>闲云旅游旅游网</h5>
                     <p>上亿旅行者共同打造的"旅行神器"</p>
                     <p><span>60,000</span>&nbsp;多个全球旅游目的地</p>
-                    <p><span>60,000</span>&nbsp;多个细分目的地新玩法</p>
+                    <p><span>600,000</span>&nbsp;多个细分目的地新玩法</p>
                     <p><span>760,000,000</span>&nbsp;次攻略下载</p>
                     <p><span>38,000</span>&nbsp;家旅游产品供应商</p>
-                </div>
-                <div class="introduction">
+                </el-col>
+                <el-col :span="5.5" class="introduction">
                     <h5>关于我们</h5>
                     <p>隐私政策&nbsp;商标声明</p>
                     <p>服务协议&nbsp;游记协议</p>
@@ -26,27 +26,26 @@
                     <p>网络信息侵权通知指引</p>
                     <p>闲云旅游旅游网服务监督员</p>
                     <p>网站地图加入闲云旅游</p>
-                </div>
-                <div class="service">
+                </el-col>
+                <el-col :span="5.5" class="service">
                     <h5>旅行服务</h5>
                     <p>旅游攻略&nbsp;酒店预订</p>
                     <p>旅游特价&nbsp;国际租车</p>
                     <p>旅游问答&nbsp;旅游保险</p>
                     <p>旅游指南&nbsp;订火车票</p>
                     <p>旅游资讯&nbsp;APP下载</p>
-                </div>
-                <div class="QRCode">
+                </el-col>
+                <el-col :span="6" class="QRCode">
                     <div class="picture">
                         <img src="./../static/images/QRCode.png" alt="">
                     </div>
                     <p>关注我们</p>
-                </div>
+                </el-col>
             </el-row>
             <div class="copyright">
                 <p>京ICP备08001421号 京公网安备110108007702 Copyright © 2016-2019 博学谷 All Rights Reserved</p>
             </div>
       </div>
-      <!-- <div class="box" style="height:500px;background-color:#323232"></div> -->
   </div>
 </template>
 
@@ -61,11 +60,13 @@ export default {
     background-color: #323232;
     color:#ccc;
     font-size: 12px;
+    min-width: 1000px;
     .container{
         margin: 0 auto;
         width: 1000px;
         .support{
             padding-top: 30px;
+            margin: 0;
             .travel,.introduction,.service{
                 width:250px;
                 h5{
