@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-02 19:19:26
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-04 21:02:06
+ * @LastEditTime: 2019-09-05 19:31:57
  -->
 <template>
     <el-form class="registerForm" :model="registerForm" :rules="rules" ref="registerForm" @keyup.ctrl.13.native="register">

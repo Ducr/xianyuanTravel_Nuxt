@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-01 18:55:46
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-04 21:05:34
+ * @LastEditTime: 2019-09-05 20:36:03
  -->
 <template>
   <div class="header">
@@ -34,7 +34,7 @@
                 </el-row>
                 
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item @click.native="leaveForPersonal">个人中心</el-dropdown-item>
                     <!-- 给第三方组件添加事件需要加上native -->
                     <el-dropdown-item
                     @click.native="logout">退出</el-dropdown-item>
@@ -55,6 +55,13 @@ export default {
             this.$store.commit('user/clearUserInfo')
             this.$router.push('/user/login')
             this.$message.success('退出成功')
+        },
+        leaveForPersonal(){
+            this.$router.push('/user/personal')
+            // 如果已经在个人中心页，再点击个人中心就不再显示跳转提示信息
+            if(!window.location.href.includes('/user/personal')){
+                this.$message.success('正在跳转个人中心')
+            }
         }
     }
     
