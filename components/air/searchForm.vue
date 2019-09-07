@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-05 15:53:30
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-05 21:29:32
+ * @LastEditTime: 2019-09-07 20:04:12
  -->
 <template>
     <div class="search-form">
@@ -29,6 +29,7 @@
                 v-model="searchForm.departCity"
                 :fetch-suggestions='queryDepartSearch'
                 @select="handleDepartSelect"
+                @blur="handleDepartBlur"
                 ></el-autocomplete>
             </el-form-item>
                 <!-- fetch-suggestions: 每次输入时候都会执行，获取搜索建议，并且显示在输入框的下拉框中 -->
@@ -40,6 +41,7 @@
                 v-model="searchForm.destCity"
                 :fetch-suggestions='queryDestSearch'
                 @select="handleDestSelect"
+                @blur="handleDestBlur"
                 ></el-autocomplete>
             </el-form-item>
             <el-form-item label="出发时间">
@@ -96,7 +98,9 @@ export default {
             //console.log(time.getTime())
             return Date.parse(time) < (Date.now()-1*24*3600*1000)
           }
-        }
+        },
+        departSelect: [],//存储后台返回的出发城市数组
+        destSelect: []//存储后台返回的到达城市数组
       }
     },
     mounted(){
@@ -142,9 +146,12 @@ export default {
             // 把带有value属性的对象添加到数组中
             selectShow.push(v)
           })
-          // 默认选中第一个，防止用户不点击选项
-          this.searchForm.departCity = selectShow[0].value
-          this.searchForm.departCode = selectShow[0].sort
+          // （1） 默认选中第一个，防止用户不点击选项
+          // 此方法如果不选择第一项，则后续会掺杂为如下格式：广元————>广州元，采用失焦事件改进
+          // this.searchForm.departCity = selectShow[0].value
+          // this.searchForm.departCode = selectShow[0].sort
+          // 存储当前城市数组，因为作用域的原因，无法访问进来
+          this.departSelect = selectShow
           // 显示在下拉列表中
           callback(selectShow)
         })
@@ -157,7 +164,13 @@ export default {
         this.searchForm.departCity=item.value
         this.searchForm.departCode=item.sort
       },
-      // 3.触发城市输入框获得焦点时触发
+      // 3.处理出发城市失焦事件
+      handleDepartBlur(){
+        // 判断是否有值，否则赋空值，避免报错
+        this.searchForm.departCity = this.departSelect[0] ? this.departSelect[0].value : ''
+        this.searchForm.departCode = this.departSelect[0] ? this.departSelect[0].sort : ''
+      },
+      // 4.触发城市输入框获得焦点时触发
       // value是选中的值，callback是回调函数，接收要展示的列表
       queryDestSearch(value,callback){
                 if(!value){
@@ -182,26 +195,35 @@ export default {
             // 把带有value属性的对象添加到数组中
             selectShow.push(v)
           })
-          // 默认选中第一个，防止用户不点击选项
-          this.searchForm.destCity = selectShow[0].value
-          this.searchForm.destCode = selectShow[0].sort
+          // （1） 默认选中第一个，防止用户不点击选项
+          // 此方法如果不选择第一项，则后续会掺杂为如下格式：广元————>广州元，采用失焦事件改进
+          // this.searchForm.destCity = selectShow[0].value
+          // this.searchForm.destCode = selectShow[0].sort
+          // 存储当前城市数组，因为作用域的原因，无法访问进来
+          this.destSelect = selectShow
           // 显示在下拉列表中
           callback(selectShow)
         })
       },
-      // 4.目标城市下拉选择时触发
+      // 5.目标城市下拉选择时触发
       handleDestSelect(item){
         this.searchForm.destCity = item.value
         this.searchForm.destCode = item.sort
       },
-      // 5.确认选择日期时触发
+      // 6.处理到达城市失焦事件
+      handleDestBlur(){
+        // 判断是否有值，否则赋空值，避免报错
+        this.searchForm.destCity = this.destSelect[0] ? this.destSelect[0].value : ''
+        this.searchForm.destCode =  this.destSelect[0] ? this.destSelect[0].sort : ''
+      },
+      // 7.确认选择日期时触发
       handleDate(time){
         // console.log(time)
         // 处理时间格式为：xxxx-xx-xx
         this.searchForm.departDate = moment(time).format('YYYY-MM-DD')
         
       },
-      // 6.出发和目标城市切换时触发
+      // 8.出发和目标城市切换时触发
       handleReverse(){
         // 解构出来是一个新对象，是一个新的引用地址，不会共享一个引用地址，而产生对象属性相互污染的情况
         const { departCity,departCode,destCity,destCode } =this.searchForm
@@ -211,7 +233,7 @@ export default {
         this.searchForm.destCity = departCity
         this.searchForm.destCode = departCode
       },
-      // 7.确认搜索时触发
+      // 9.确认搜索时触发
       submitSearch(){
         // console.log(this.searchForm)
         // 进行输入框的非空判断
