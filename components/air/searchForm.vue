@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-05 15:53:30
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-07 20:04:12
+ * @LastEditTime: 2019-09-08 17:07:14
  -->
 <template>
     <div class="search-form">
@@ -104,7 +104,8 @@ export default {
       }
     },
     mounted(){
-      
+      // 默认选择当前的航班
+        this.searchForm.departDate = moment(new Date()).format('YYYY-MM-DD')
     },
     methods:{
       // 0.tab栏切换时触发

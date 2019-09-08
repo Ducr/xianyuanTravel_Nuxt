@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-05 19:50:34
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-07 20:50:10
+ * @LastEditTime: 2019-09-08 18:36:18
  -->
 <template>
     <section class="contianer">
@@ -14,7 +14,7 @@
             <div class="flights-content">
                 <!-- 过滤条件 -->
                 <div>
-                    
+                    <FlightsFilters :filtersData="cacheFlightsListData" @setShowData="handleFilterShow"></FlightsFilters>
                 </div>
                 <!-- 航班头部布局 -->
                 <div>
@@ -28,8 +28,12 @@
                   :itemData="item"
                   ></FlightsItem>
                     <!-- 如果无航班信息，提示用户选择其他航班信息 -->
-                  <div class="remind" v-show='true'>
-                    <span>{{$route.query.departCity}} - {{$route.query.destCity}} / {{$route.query.departDate}} 暂无航班,
+                  <div class="remind" v-if='total===null'>
+                    <span>正在加载数据 <i class="el-icon-loading"></i></span>
+                    <!-- 信息提示 -->
+                  </div> 
+                  <div class="remind" v-else-if='total===0'>
+                    <span>{{$route.query.departCity}} - {{$route.query.destCity}} / {{$route.query.departDate}} 暂无该选项航班,
                       <nuxt-link class="jump" to="/air">点击此处更换其他航班！</nuxt-link>
                     </span>
                     <!-- 信息提示 -->
@@ -64,22 +68,34 @@
 <script>
 import FlightsListHead from '@/components/air/flightsListHead'
 import FlightsItem from '@/components/air/flightsItem'
+import FlightsFilters from '@/components/air/flightsFilters'
 
 export default {
     data(){
         return {
           // 机票返回的总数据，总数据包含4个属性：flights、info、options、total
-          flightsListData: {},
+          flightsListData: {
+            // 避免请求数据未回来前，子组件引用数据出错，设个默认值
+            info: {},
+            options: {}
+          },
+          // 缓存的机票的原始数据，和最初的flightsListData数据一致
+          // 该数据不会因为子组件进行筛选而被改变，确保每次筛选的数据都是原始的数据
+          cacheFlightsListData: {
+            // 避免请求数据未回来前，子组件引用数据出错，设个默认值
+            info: {},
+            options: {}
+          },
           // 当前显示的列表数组，由于是只请求一次数据，需要每自行处理显示的数据
           dataList: [],
           currentPage: 1,
           pageSize:5,
-          total: 0
+          total: null
         }
         
     },
     components:{
-      FlightsListHead,FlightsItem
+      FlightsListHead,FlightsItem,FlightsFilters
     },
     mounted(){
       // 请求航班列表数据
@@ -93,6 +109,8 @@ export default {
         if(res.status === 200){
           // 赋值给总数据
           this.flightsListData =res.data
+          // 赋值给缓存数组
+          this.cacheFlightsListData = { ...res.data }
           this.total = res.data.total
           // 赋值给显示的列表数组,默认显示第一页的数据
           this.dataList = res.data.flights.slice( 0,this.pageSize )
@@ -118,6 +136,18 @@ export default {
           this.dataList = this.flightsListData.flights.slice(
             (this.currentPage-1) * this.pageSize,this.currentPage * this.pageSize
             )
+      },
+      // 3.处理筛选后的显示数组 dataList
+      handleFilterShow(filterData){
+        // 修改总的航班列表
+        this.flightsListData.flights = filterData
+       // 确保切换后，都返回第一页
+        this.currentPage = 1
+        // 修改后的值，赋值给显示的列表数组，显示范围为（ 0，this.pageSize ）
+        this.dataList = this.flightsListData.flights.slice( 0, this.pageSize )
+        // 修改总条数
+        this.total = filterData.length
+
       }
     }
 }
@@ -139,6 +169,8 @@ export default {
     }
     .remind{
       // width: 1125px;
+      height: 100px;
+      line-height: 100px;
       color:#999;
       font-size:16px;
       text-align: center 
