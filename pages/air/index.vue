@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-01 11:34:19
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-07 15:28:31
+ * @LastEditTime: 2019-09-10 18:36:43
  -->
 <template>
   <section class="container">
@@ -46,7 +46,9 @@
     <!-- 特价机票 -->
     <div class="air-sale">
         <el-row type="flex" class="air-sale-pic" justify="space-between">
-            <el-col :span="6" v-for="(item,index) in sales" :key="index">
+            <el-col :span="6" v-for="(item,index) in sales" :key="index"
+            @click.native="setSearchHistory"
+            >
                 <nuxt-link :to="`/air/flights/?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`">
                     <img :src="item.cover" alt="">
                     <el-row class="layer-bar" type="flex" justify="space-between">
@@ -67,21 +69,31 @@ export default {
     return {
       sales:[]
     }
+    },
+  components:{
+    SearchForm
+  },mounted(){
+    this.$axios({
+      url:"/airs/sale"
+    })
+    .then(res=>{
+      console.log(res)
+      if(res.status===200){
+        this.sales = res.data.data
+        
+      }
+    })
   },
-components:{
-  SearchForm
-},mounted(){
-  this.$axios({
-    url:"/airs/sale"
-  })
-  .then(res=>{
-    console.log(res)
-    if(res.status===200){
-       this.sales = res.data.data
-      
+  methods:{
+    setSearchHistory(){
+      // 进行本地存储
+        // 先取出本地存储
+        const arr = JSON.parse(localStorage.getItem('airs')) || []
+        arr.push(this.$route.query)
+        // 再存进本地存储
+        localStorage.setItem('airs',JSON.stringify(arr))
     }
-  })
-}
+  }
 }
 </script>
 

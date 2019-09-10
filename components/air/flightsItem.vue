@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-07 15:10:03
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-07 18:37:37
+ * @LastEditTime: 2019-09-10 17:12:21
  -->
 <template>
     <div class="flight-item">
@@ -55,7 +55,9 @@
                         <el-col :span="3" class="choose-button">
                             <el-button 
                             type="warning" 
-                            size="mini">
+                            size="mini"
+                            @click="handleChoose(item.seat_xid)"
+                            >
                             选定
                             </el-button>
                             <p>剩余：{{item.discount}}</p>
@@ -108,6 +110,19 @@ export default {
         const minutes = count % 60
         return `${hours}时${minutes}分`
       }
+    },
+    methods:{
+        handleChoose(seat_xid){
+            // 跳转到机票订单页
+            // 跳转携带的参数为 机票id 和 座位seat_xid
+            this.$router.push({
+                path:'/air/order',
+                query: {
+                    id :this.itemData.id,
+                    seat_xid
+                }
+            })
+        }
     }
 }
 </script>

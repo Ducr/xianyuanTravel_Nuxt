@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-02 19:19:10
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-04 20:58:33
+ * @LastEditTime: 2019-09-10 20:21:55
  -->
 <template>
   <el-form  class="form" :model="loginForm" :rules="rules" ref="loginForm"  @keyup.ctrl.13.native="login">
@@ -60,6 +60,10 @@ export default {
           // 使用commit调用mutations下的方法
           // commit接收两个参数，第一个参数是mutations参数的方法名，第二个参数是传入数据
           this.$store.commit('user/setUserInfo',res.data)
+          this.$router.push('/')
+          // 登录成功后返回前一页面
+          this.$router.back()
+          // this.$router.go(-1)
         } else {
           this.$message.error('登录失败')
         }
@@ -72,9 +76,9 @@ export default {
       //   // console.log(res)
       // })
       // -----------------------------------------------------
-      setTimeout(() => {
-        this.$router.replace('/')
-      }, 1000)
+      // setTimeout(() => {
+        // this.$router.replace('/')
+      // }, 1000)
         } else {
           this.$message.error('请输入必填数据')
           this.$refs.loginForm.clearValidate(['username','password'])

@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-01 18:55:46
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-05 20:36:03
+ * @LastEditTime: 2019-09-10 16:42:43
  -->
 <template>
   <div class="header">
@@ -20,6 +20,7 @@
             <nuxt-link  to='/air'>国内机票</nuxt-link>
         </el-row>
         <div class="login" v-if="!$store.state.user.userInfo.token">
+        <!-- <div class="login" v-if="token"> -->
             <nuxt-link  to='/user/login'>登录 / 注册</nuxt-link>
             <!-- 如果用户存在则展示用户信息，用户数据来自store -->
         </div>
@@ -47,8 +48,21 @@
 
 <script>
 export default {
+    data(){
+        return {
+            token: null
+        }
+    },
+    beforeMount(){
+         this.token = this.$store.state
+    },
+    
     mounted(){
         // console.log(this.$store.state)
+        setTimeout(()=>{
+            this.token = this.$store.state
+        },10)
+        // console.log(this.token)
     },
     methods:{
         logout(){

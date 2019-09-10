@@ -2,9 +2,11 @@
  * @Description: 
  * @version: 
  * @Author: Ducr
- * @Date: 2019-09-05 19:50:34
+ * @Email: dulant_du@126.com
+ * @Date: 2019-09-10 10:59:46
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-08 18:36:18
+ * @LastEditTime: 2019-09-10 22:54:48
+ * @Note: 
  -->
 <template>
     <section class="contianer">
@@ -60,6 +62,7 @@
             <!-- 侧边栏 -->
             <div class="aside">
                 <!-- 侧边栏组件 -->
+                <FlightsAside></FlightsAside>
             </div>
         </el-row>
     </section>
@@ -69,6 +72,7 @@
 import FlightsListHead from '@/components/air/flightsListHead'
 import FlightsItem from '@/components/air/flightsItem'
 import FlightsFilters from '@/components/air/flightsFilters'
+import FlightsAside from '@/components/air/flightsAside'
 
 export default {
     data(){
@@ -95,11 +99,23 @@ export default {
         
     },
     components:{
-      FlightsListHead,FlightsItem,FlightsFilters
+      FlightsListHead,FlightsItem,FlightsFilters,FlightsAside
+    },
+    // watch可以监听this下的所有属性
+    watch:{
+      $route(){
+      // 请求航班列表数据
+        this.loadFlightsList()
+      }
     },
     mounted(){
       // 请求航班列表数据
-      this.$axios({
+     this.loadFlightsList()
+    },
+    methods:{
+      // 0.请求航班列表数据
+      loadFlightsList(){
+         this.$axios({
         url:'airs',
         // 路由的url参数
         params:this.$route.query
@@ -116,8 +132,7 @@ export default {
           this.dataList = res.data.flights.slice( 0,this.pageSize )
         }
       })
-    },
-    methods:{
+      },
       // 1.处理每页条数切换，默认参数为被选中的值
       handleSizeChange(val){
         // 切换每页条数

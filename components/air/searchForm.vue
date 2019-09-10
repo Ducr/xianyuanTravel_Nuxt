@@ -4,7 +4,7 @@
  * @Author: Ducr
  * @Date: 2019-09-05 15:53:30
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-08 17:07:14
+ * @LastEditTime: 2019-09-10 18:29:10
  -->
 <template>
     <div class="search-form">
@@ -266,6 +266,12 @@ export default {
           })
           return
         }
+        // 进行本地存储
+        // 先取出本地存储
+        const arr = JSON.parse(localStorage.getItem('airs')) || []
+        arr.push(this.searchForm)
+        // 再存进本地存储
+        localStorage.setItem('airs',JSON.stringify(arr))
         // 提交搜索请求 
         this.$axios({
           url:"/airs",
