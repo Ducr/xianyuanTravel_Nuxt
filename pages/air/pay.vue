@@ -5,14 +5,14 @@
  * @Email: dulant_du@126.com
  * @Date: 2019-09-10 20:46:26
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-10 22:53:59
+ * @LastEditTime: 2019-09-11 00:07:25
  * @Note: 
  -->
 <template>
     <div class="container">
         <div class="main">
             <div class="pay-title">
-                支付总金额 <span class="pay-price">￥ 1000</span>
+                支付总金额 <span class="pay-price">￥ {{$store.state.air.allPrice}}</span>
             </div>
             <div class="pay-main">
                 <h4>微信支付</h4>
@@ -36,8 +36,37 @@
 </template>
 
 <script>
+// 引入生成二维码的插件
+import QRCode from 'qrcode'
 export default {
-    
+    mounted(){
+        // 请求订单详情
+        // 因为刷新页面的时间比获取store状态数据的时间要短，使用这样永远也取不到store里面的状态
+        // 添加一个队列，使用定时器即可，确保加载页面完成后再进行获取store的状态数据
+        var timer = setTimeout(()=>{
+            this.$axios({
+            url: '/airorders/' + this.$route.query.id,
+            // 单独加上请求头的token
+            headers:{
+                Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+            }
+        })
+        .then(res =>{
+            console.log(res)
+            if(res.status === 200){
+                // 获取到canvas的节点元素,即要在哪里生成二维码
+                let canvas = document.getElementById('qrcode-stage')
+                // 获取要生成二维码的链接
+                const { code_url } = res.data.payInfo
+                // 调用方法生成二维码
+                // toCanvas(canvas, text, [options], [cb(error)])
+                QRCode.toCanvas(canvas,code_url,{
+                    width: 240
+                })
+            }
+        })
+        },10)
+    }
 }
 </script>
 
