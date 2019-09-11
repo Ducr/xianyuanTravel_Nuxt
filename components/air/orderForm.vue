@@ -5,7 +5,7 @@
  * @Email: dulant_du@126.com
  * @Date: 2019-09-10 10:59:46
  * @LastEditors: Ducr
- * @LastEditTime: 2019-09-10 21:48:01
+ * @LastEditTime: 2019-09-11 16:27:01
  * @Note: 
  -->
 <template>
@@ -87,7 +87,7 @@
                 <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
             </div>
         </div>
-        <!-- 引用一下计算属性，负责不会起效果 -->
+        <!-- 引用一下计算属性，否则不会起效果，不用显示将其隐藏 -->
         <span v-show="false">{{allPrice}}</span>
     </div>
 </template>
